@@ -1,8 +1,16 @@
 Package: autocrop
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Title: Automatically Remove Surrounding Whitespace from an Image.
+Version: 0.0.1.9000
+Date: 2015-12-22
+Authors@R: person("Jeff", "Hollister", email = "hollister.jeff@epa.gov",
+  role = c("aut", "cre"))
+Description:
+  Autocropping automatically removes surrounding white space form an image.
+  Most image processing software (e.g. gimp, Irfanview, imageMagik, etc.)
+  have this capability.  This package provides a single function to do just this.
+  A few options are available that allow the user to write the cropped image out
+  to a new file and also to leave a border of white space around the image.
 Depends: R (>= 3.2.2)
-License: What license is it under?
+Imports: raster
+License: CC0
 LazyData: true
