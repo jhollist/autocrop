@@ -29,7 +29,6 @@ autocrop <- function(x, border = 2, outfile = NULL, ...){
     xf <- raster::stack(x)
   }
   for(i in slot(xf,"layers")){
-    #browser()
     array <- raster::as.matrix(i)
     if(!exists("minx")){minx<-ncol(xf)+1}
     if(!exists("maxx")){maxx<-0}
@@ -75,6 +74,7 @@ autocrop <- function(x, border = 2, outfile = NULL, ...){
 
   crop_img <- raster::crop(xf,raster::extent(matrix(c(minx,miny,maxx,maxy),
                                                     ncol =2)))
+
   #Save file
   if(!is.null(outfile)){
     #convert to spatial grid (was having trouble with writeRaster)
