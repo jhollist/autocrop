@@ -1,5 +1,5 @@
 Package: autocrop
-Title: Automatically Remove Surrounding Whitespace from an Image.
+Title: Automatically Remove Surrounding Whitespace from an Image
 Version: 0.0.1.9000
 Date: 2015-12-22
 Authors@R: person("Jeff", "Hollister", email = "hollister.jeff@epa.gov",
@@ -11,6 +11,6 @@ Description:
   A few options are available that allow the user to write the cropped image out
   to a new file and also to leave a border of white space around the image.
 Depends: R (>= 3.2.2)
-Imports: raster
+Imports: raster, rgdal
 License: CC0
 LazyData: true

@@ -4,14 +4,19 @@
 \alias{autocrop}
 \title{autocrop}
 \usage{
-autocrop(x, border = 2, outfile = NULL)
+autocrop(x, border = 2, outfile = NULL, ...)
 }
 \arguments{
 \item{x}{a file or a raster object}
 
-\item{border}{}
+\item{border}{border of whitespace, in pixels, to leave around image.}
 
-\item{outfile}{}
+\item{outfile}{output file to save.  Defaults to NULL}
+
+\item{...}{parameters to pass to \code{writeGDAL}.  Any \code{writeGDAL}
+parameters can be passed, but it is included primarily to specifiy
+a different output file type other than the default .tif.  For
+instance, jpeg output is specified with \code{drivername = "JPEG"}.}
 }
 \description{
 Automatically crop away white space form an image.  Can read any image
@@ -22,8 +27,8 @@ x<-rep(0,49)
 x[18]<-1
 x[24:25]<-1
 x[31:32]<-1
-x<-stack(raster(matrix(x,ncol=7,byrow = T)))
-extent(x) <- extent(c(1,7,1,7))
+x<-raster::stack(raster::raster(matrix(x,ncol=7,byrow = TRUE)))
+raster::extent(x) <- raster::extent(c(1,7,1,7))
 x_ac<-autocrop(x,border=0)
 x_ac<-autocrop(system.file("extdata/test.tif",package="autocrop"))
 }
