@@ -82,5 +82,5 @@ autocrop <- function(x, border = 2, outfile = NULL, ...){
     rgdal::writeGDAL(as(crop_img,"SpatialGridDataFrame"),fname = outfile,...)
 
   }
-  return()
+  return(crop_img)
 }
