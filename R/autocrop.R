@@ -7,6 +7,7 @@
 #' @param border
 #' @param outfile
 #' @import raster
+#' @export
 #' @examples
 #' x<-rep(0,49)
 #' x[18]<-1
