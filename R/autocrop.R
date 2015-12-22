@@ -4,9 +4,10 @@
 #' supported by \code{raster}.
 #'
 #' @param x a file or a raster object
-#' @param border
-#' @param outfile
+#' @param border number of pixels of white space to leave around image border
+#' @param outfile name of output file.  Image format is assumed by extension.
 #' @import raster
+#' @export
 #' @examples
 #' x<-rep(0,49)
 #' x[18]<-1
