@@ -11,6 +11,6 @@ Description:
   A few options are available that allow the user to write the cropped image out
   to a new file and also to leave a border of white space around the image.
 Depends: R (>= 3.2.2)
-Imports: raster, rgdal
+Imports: raster
 License: CC0
 LazyData: true

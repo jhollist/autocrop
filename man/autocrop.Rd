@@ -4,7 +4,8 @@
 \alias{autocrop}
 \title{autocrop}
 \usage{
-autocrop(x, border = 2, outfile = NULL, ...)
+autocrop(x, border = 2, outfile = NULL, format = NULL, width = NULL,
+  units = "in", res = 150, ...)
 }
 \arguments{
 \item{x}{a file or a raster object}
@@ -13,10 +14,17 @@ autocrop(x, border = 2, outfile = NULL, ...)
 
 \item{outfile}{output file to save.  Defaults to NULL}
 
-\item{...}{parameters to pass to \code{writeGDAL}.  Any \code{writeGDAL}
-parameters can be passed, but it is included primarily to specifiy
-a different output file type other than the default .tif.  For
-instance, jpeg output is specified with \code{drivername = "JPEG"}.}
+\item{format}{file format type.  Guessed by outfile extension.}
+
+\item{width}{width is specified (defaults to current device width).  Height
+is determined by aspect ratio of cropped image.}
+
+\item{units}{units defualts to inches, but may be any units supported by
+the output format.}
+
+\item{res}{output dpi.  Defaults to 150.}
+
+\item{...}{parameters to pass to specfified output device (e.g. tiff()).}
 }
 \description{
 Automatically crop away white space form an image.  Can read any image
@@ -30,6 +38,7 @@ x[31:32]<-1
 x<-raster::stack(raster::raster(matrix(x,ncol=7,byrow = TRUE)))
 raster::extent(x) <- raster::extent(c(1,7,1,7))
 x_ac<-autocrop(x,border=0)
-x_ac<-autocrop(system.file("extdata/test.tif",package="autocrop"))
+x_ac<-autocrop(system.file("extdata/test.tif",package="autocrop"),
+outfile = "test_devs.tiff", width = 2, compression = "lzw")
 }
 

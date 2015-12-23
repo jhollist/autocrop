@@ -6,11 +6,14 @@
 #' @param x a file or a raster object
 #' @param border border of whitespace, in pixels, to leave around image.
 #' @param outfile output file to save.  Defaults to NULL
-#' @param ... parameters to pass to \code{writeGDAL}.  Any \code{writeGDAL}
-#'            parameters can be passed, but it is included primarily to specifiy
-#'            a different output file type other than the default .tif.  For
-#'            instance, jpeg output is specified with \code{drivername = "JPEG"}.
-#' @import raster rgdal
+#' @param format file format type.  Guessed by outfile extension.
+#' @param width width is specified (defaults to current device width).  Height
+#'              is determined by aspect ratio of cropped image.
+#' @param units units defualts to inches, but may be any units supported by
+#'              the output format.
+#' @param res output dpi.  Defaults to 150.
+#' @param ... parameters to pass to specfified output device (e.g. tiff()).
+#' @import raster
 #' @export
 #' @examples
 #' x<-rep(0,49)
@@ -20,8 +23,11 @@
 #' x<-raster::stack(raster::raster(matrix(x,ncol=7,byrow = TRUE)))
 #' raster::extent(x) <- raster::extent(c(1,7,1,7))
 #' x_ac<-autocrop(x,border=0)
-#' x_ac<-autocrop(system.file("extdata/test.tif",package="autocrop"))
-autocrop <- function(x, border = 2, outfile = NULL, ...){
+#' x_ac<-autocrop(system.file("extdata/test.tif",package="autocrop"),
+#' outfile = "test_devs.tiff", width = 2, compression = "lzw")
+#'
+autocrop <- function(x, border = 2, outfile = NULL, format = NULL, width = NULL,
+                     units = "in", res = 150, ...){
 
   if(class(x)=="RasterStack"){
     xf <- x
@@ -71,16 +77,66 @@ autocrop <- function(x, border = 2, outfile = NULL, ...){
   maxx<-maxx+1+border
   miny<-miny-1-border
   maxy<-maxy+1+border
-
   crop_img <- raster::crop(xf,raster::extent(matrix(c(minx,miny,maxx,maxy),
                                                     ncol =2)))
 
   #Save file
   if(!is.null(outfile)){
+    if(is.null(format)){
+      format <- get_format(outfile)
+    }
+    save_img(crop_img,outfile,format,width,units,res,...)
     #convert to spatial grid (was having trouble with writeRaster)
     #This feels kinda hacky
-    rgdal::writeGDAL(as(crop_img,"SpatialGridDataFrame"),fname = outfile,...)
+    #rgdal::writeGDAL(as(crop_img,"SpatialGridDataFrame"),fname = outfile, ...)
 
   }
   return(crop_img)
+}
+
+#' Get image format
+#' @param infile
+#' @keywords internal
+get_format<-function(infile){
+  ext <- strsplit(infile, "\\.")[[1]]
+  ext <- ext[length(ext)]
+  if(ext == "tif"){ext<-"tiff"}
+  if(ext == "jpg"){ext<-"jpeg"}
+  return(ext)
+}
+
+#' Save image
+#' @param cropped
+#' @param outfile
+#' @param format
+#' @param width
+#' @param units
+#' @param res
+#' @param ...
+#' @keywords internal
+save_img<-function(cropped,outfile,format,width,units,res,...){
+  if(is.null(width)){
+    width <- dev.size()[1]
+  }
+  height <- width/(ncol(cropped)/nrow(cropped))
+  if(format == "tiff"){
+    tiff(outfile,width,height,units,res=res,...)
+    raster::plotRGB(cropped)
+    dev.off()
+  }
+  if(format == "jpeg"){
+    jpeg(outfile,width,height,units,res=res,...)
+    raster::plotRGB(cropped)
+    dev.off()
+  }
+  if(format == "bmp"){
+    bmp(outfile,width,height,units,res=res,...)
+    raster::plotRGB(cropped)
+    dev.off()
+  }
+  if(format == "png"){
+    png(outfile,width,height,units,res,...)
+    raster::plotRGB(cropped)
+    dev.off()
+  }
 }
