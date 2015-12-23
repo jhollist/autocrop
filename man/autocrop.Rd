@@ -38,7 +38,7 @@ x[31:32]<-1
 x<-raster::stack(raster::raster(matrix(x,ncol=7,byrow = TRUE)))
 raster::extent(x) <- raster::extent(c(1,7,1,7))
 x_ac<-autocrop(x,border=0)
-x_ac<-autocrop(system.file("extdata/test.tif",package="autocrop"),
-outfile = "test_devs.tiff", width = 2, compression = "lzw")
+x_ac<-autocrop(system.file("extdata/big_test.tiff",package="autocrop"),
+outfile = "test_devs.tiff", width = 6.1, res = 450, compression = "lzw")
 }
 

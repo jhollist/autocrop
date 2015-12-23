@@ -23,8 +23,8 @@
 #' x<-raster::stack(raster::raster(matrix(x,ncol=7,byrow = TRUE)))
 #' raster::extent(x) <- raster::extent(c(1,7,1,7))
 #' x_ac<-autocrop(x,border=0)
-#' x_ac<-autocrop(system.file("extdata/test.tif",package="autocrop"),
-#' outfile = "test_devs.tiff", width = 2, compression = "lzw")
+#' x_ac<-autocrop(system.file("extdata/big_test.tiff",package="autocrop"),
+#' outfile = "test_devs.tiff", width = 6.1, res = 450, compression = "lzw")
 #'
 autocrop <- function(x, border = 2, outfile = NULL, format = NULL, width = NULL,
                      units = "in", res = 150, ...){
@@ -77,17 +77,32 @@ autocrop <- function(x, border = 2, outfile = NULL, format = NULL, width = NULL,
   maxx<-maxx+1+border
   miny<-miny-1-border
   maxy<-maxy+1+border
-  crop_img <- raster::crop(xf,raster::extent(matrix(c(minx,miny,maxx,maxy),
-                                                    ncol =2)))
-
+  crop_img <- raster::stack(raster::crop(xf,raster::extent(matrix(c(minx,miny,
+                                                                    maxx,maxy),
+                                                                  ncol =2))))
+  crop_img <- array_it(crop_img)
+  browser()
   #Save file
   if(!is.null(outfile)){
     if(is.null(format)){
       format <- get_format(outfile)
     }
+
     save_img(crop_img,outfile,format,width,units,res,...)
   }
   return(crop_img)
+}
+
+#' Get image format
+#' @param infile
+#' @keywords internal
+array_it<-function(img){
+  d<-NULL
+  for(i in slot(img,"layers")){
+    d <- c(d,raster::as.matrix(i))
+  }
+  d/255
+  return(array(d,c(nrow(img),ncol(img),length(img@layers))))
 }
 
 #' Get image format
@@ -117,22 +132,22 @@ save_img<-function(cropped,outfile,format,width,units,res,...){
   height <- width/(ncol(cropped)/nrow(cropped))
   if(format == "tiff"){
     tiff(outfile,width,height,units,res=res,...)
-    raster::plotRGB(cropped)
+    raster::plotRGB(cropped,maxpixels=nrow(cropped)*ncol(cropped),interpolate=TRUE)
     dev.off()
   }
   if(format == "jpeg"){
     jpeg(outfile,width,height,units,res=res,...)
-    raster::plotRGB(cropped)
+    raster::plotRGB(cropped,maxpixels=nrow(cropped)*ncol(cropped))
     dev.off()
   }
   if(format == "bmp"){
     bmp(outfile,width,height,units,res=res,...)
-    raster::plotRGB(cropped)
+    raster::plotRGB(cropped,maxpixels=nrow(cropped)*ncol(cropped))
     dev.off()
   }
   if(format == "png"){
     png(outfile,width,height,units,res,...)
-    raster::plotRGB(cropped)
+    raster::plotRGB(cropped,maxpixels=nrow(cropped)*ncol(cropped))
     dev.off()
   }
 }
