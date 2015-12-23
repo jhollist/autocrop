@@ -2,4 +2,3 @@
 
 export(autocrop)
 import(raster)
-import(rgdal)

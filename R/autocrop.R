@@ -86,10 +86,6 @@ autocrop <- function(x, border = 2, outfile = NULL, format = NULL, width = NULL,
       format <- get_format(outfile)
     }
     save_img(crop_img,outfile,format,width,units,res,...)
-    #convert to spatial grid (was having trouble with writeRaster)
-    #This feels kinda hacky
-    #rgdal::writeGDAL(as(crop_img,"SpatialGridDataFrame"),fname = outfile, ...)
-
   }
   return(crop_img)
 }
