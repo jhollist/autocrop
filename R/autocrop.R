@@ -80,8 +80,7 @@ autocrop <- function(x, border = 2, outfile = NULL, format = NULL, width = NULL,
   crop_img <- raster::stack(raster::crop(xf,raster::extent(matrix(c(minx,miny,
                                                                     maxx,maxy),
                                                                   ncol =2))))
-  crop_img <- array_it(crop_img)
-  browser()
+
   #Save file
   if(!is.null(outfile)){
     if(is.null(format)){
@@ -91,18 +90,6 @@ autocrop <- function(x, border = 2, outfile = NULL, format = NULL, width = NULL,
     save_img(crop_img,outfile,format,width,units,res,...)
   }
   return(crop_img)
-}
-
-#' Get image format
-#' @param infile
-#' @keywords internal
-array_it<-function(img){
-  d<-NULL
-  for(i in slot(img,"layers")){
-    d <- c(d,raster::as.matrix(i))
-  }
-  d/255
-  return(array(d,c(nrow(img),ncol(img),length(img@layers))))
 }
 
 #' Get image format
@@ -137,17 +124,17 @@ save_img<-function(cropped,outfile,format,width,units,res,...){
   }
   if(format == "jpeg"){
     jpeg(outfile,width,height,units,res=res,...)
-    raster::plotRGB(cropped,maxpixels=nrow(cropped)*ncol(cropped))
+    raster::plotRGB(cropped,maxpixels=nrow(cropped)*ncol(cropped),interpolate=TRUE)
     dev.off()
   }
   if(format == "bmp"){
     bmp(outfile,width,height,units,res=res,...)
-    raster::plotRGB(cropped,maxpixels=nrow(cropped)*ncol(cropped))
+    raster::plotRGB(cropped,maxpixels=nrow(cropped)*ncol(cropped),interpolate=TRUE)
     dev.off()
   }
   if(format == "png"){
     png(outfile,width,height,units,res,...)
-    raster::plotRGB(cropped,maxpixels=nrow(cropped)*ncol(cropped))
+    raster::plotRGB(cropped,maxpixels=nrow(cropped)*ncol(cropped),interpolate=TRUE)
     dev.off()
   }
 }
