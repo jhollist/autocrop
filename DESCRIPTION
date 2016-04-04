@@ -1,5 +1,5 @@
 Package: autocrop
-Title: Automatically Remove Surrounding Whitespace from an Image.
+Title: Automatically Remove Surrounding Whitespace from an Image
 Version: 0.0.1.9000
 Date: 2015-12-22
 Authors@R: person("Jeff", "Hollister", email = "hollister.jeff@epa.gov",
