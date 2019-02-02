@@ -6,8 +6,10 @@
 \usage{
 get_format(infile)
 }
+\arguments{
+\item{infile}{input file}
+}
 \description{
 Get image format
 }
 \keyword{internal}
-

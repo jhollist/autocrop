@@ -6,8 +6,22 @@
 \usage{
 save_img(cropped, outfile, format, width, units, res, ...)
 }
+\arguments{
+\item{cropped}{x}
+
+\item{outfile}{x}
+
+\item{format}{x}
+
+\item{width}{x}
+
+\item{units}{x}
+
+\item{res}{x}
+
+\item{...}{x}
+}
 \description{
 Save image
 }
 \keyword{internal}
-

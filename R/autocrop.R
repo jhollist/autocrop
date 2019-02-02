@@ -23,8 +23,7 @@
 #' x<-raster::stack(raster::raster(matrix(x,ncol=7,byrow = TRUE)))
 #' raster::extent(x) <- raster::extent(c(1,7,1,7))
 #' x_ac<-autocrop(x,border=0)
-#' x_ac<-autocrop(system.file("extdata/big_test.tiff",package="autocrop"),
-#' outfile = "test_devs.tiff", width = 6.1, res = 450, compression = "lzw")
+#' x_ac<-autocrop(system.file("extdata/big_test.tiff",package="autocrop"), outfile = "test_devs.tiff", width = 6.1, res = 450, compression = "lzw")
 #'
 autocrop <- function(x, border = 2, outfile = NULL, format = NULL, width = NULL,
                      units = "in", res = 150, ...){
@@ -93,7 +92,7 @@ autocrop <- function(x, border = 2, outfile = NULL, format = NULL, width = NULL,
 }
 
 #' Get image format
-#' @param infile
+#' @param infile input file
 #' @keywords internal
 get_format<-function(infile){
   ext <- strsplit(infile, "\\.")[[1]]
@@ -104,13 +103,13 @@ get_format<-function(infile){
 }
 
 #' Save image
-#' @param cropped
-#' @param outfile
-#' @param format
-#' @param width
-#' @param units
-#' @param res
-#' @param ...
+#' @param cropped x
+#' @param outfile x
+#' @param format x
+#' @param width x
+#' @param units x
+#' @param res x
+#' @param ... x
 #' @keywords internal
 save_img<-function(cropped,outfile,format,width,units,res,...){
   if(is.null(width)){
